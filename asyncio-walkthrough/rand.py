@@ -18,13 +18,13 @@ async def randint(a: int, b: int) -> int:
 
 
 async def makerandom(idx: int, threshold: int = 6) -> int:
-    print(c[idx + 1] + f"Initiated makerandom({idx}).")
+    print(f"{c[idx + 1]}Initiated makerandom({idx}).")
     i = await randint(0, 10)
     while i <= threshold:
-        print(c[idx + 1] + f"makerandom({idx}) == {i} too low; retrying.")
+        print(f"{c[idx + 1]}makerandom({idx}) == {i} too low; retrying.")
         await asyncio.sleep(idx + 1)
         i = await randint(0, 10)
-    print(c[idx + 1] + f"---> Finished: makerandom({idx}) == {i}" + c[0])
+    print(f"{c[idx + 1]}---> Finished: makerandom({idx}) == {i}{c[0]}")
     return i
 
 

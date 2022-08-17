@@ -115,7 +115,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        # Should you add a new coin?
         elif event.type == ADDCOIN:
             # Create a new coin and add it to the coin_list
             new_coin = Coin()
@@ -125,9 +124,7 @@ while running:
             if len(coin_list) < 3:
                 coin_countdown -= coin_interval
             # Need to have some interval
-            if coin_countdown < 100:
-                coin_countdown = 100
-
+            coin_countdown = max(coin_countdown, 100)
             # Stop the previous timer by setting the interval to 0
             pygame.time.set_timer(ADDCOIN, 0)
 

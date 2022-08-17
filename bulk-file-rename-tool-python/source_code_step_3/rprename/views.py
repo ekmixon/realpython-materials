@@ -40,10 +40,7 @@ class Window(QWidget, Ui_Window):
 
     def loadFiles(self):
         self.dstFileList.clear()
-        if self.dirEdit.text():
-            initDir = self.dirEdit.text()
-        else:
-            initDir = str(Path.home())
+        initDir = self.dirEdit.text() or str(Path.home())
         files, filter = QFileDialog.getOpenFileNames(
             self, "Choose Files to Rename", initDir, filter=FILTERS
         )

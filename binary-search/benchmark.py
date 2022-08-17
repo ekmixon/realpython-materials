@@ -65,10 +65,7 @@ def convert(nano: int) -> str:
     if nano < mega:
         return f"{nano / kilo:.2f} µs"
 
-    if nano < giga:
-        return f"{nano / mega:.2f} ms"
-
-    return f"{nano / giga:.2f} s"
+    return f"{nano / mega:.2f} ms" if nano < giga else f"{nano / giga:.2f} s"
 
 
 def benchmark(

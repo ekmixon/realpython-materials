@@ -61,14 +61,8 @@ def load_user(user_id):
 @app.route("/")
 def index():
     if current_user.is_authenticated:
-        return (
-            "<p>Hello, {}! You're logged in! Email: {}</p>"
-            "<div><p>Google Profile Picture:</p>"
-            '<img src="{}" alt="Google profile pic"></img></div>'
-            '<a class="button" href="/logout">Logout</a>'.format(
-                current_user.name, current_user.email, current_user.profile_pic
-            )
-        )
+        return f"""<p>Hello, {current_user.name}! You're logged in! Email: {current_user.email}</p><div><p>Google Profile Picture:</p><img src="{current_user.profile_pic}" alt="Google profile pic"></img></div><a class="button" href="/logout">Logout</a>"""
+
     else:
         return '<a class="button" href="/login">Google Login</a>'
 
@@ -83,9 +77,10 @@ def login():
     # scopes that let you retrieve user's profile from Google
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri=request.base_url + "/callback",
+        redirect_uri=f"{request.base_url}/callback",
         scope=["openid", "email", "profile"],
     )
+
     return redirect(request_uri)
 
 
@@ -123,17 +118,13 @@ def callback():
     uri, headers, body = client.add_token(userinfo_endpoint)
     userinfo_response = requests.get(uri, headers=headers, data=body)
 
-    # We want to make sure their email is verified.
-    # The user authenticated with Google, authorized our
-    # app, and now we've verified their email through Google!
-    if userinfo_response.json().get("email_verified"):
-        unique_id = userinfo_response.json()["sub"]
-        users_email = userinfo_response.json()["email"]
-        picture = userinfo_response.json()["picture"]
-        users_name = userinfo_response.json()["given_name"]
-    else:
+    if not userinfo_response.json().get("email_verified"):
         return "User email not available or not verified by Google.", 400
 
+    unique_id = userinfo_response.json()["sub"]
+    users_email = userinfo_response.json()["email"]
+    picture = userinfo_response.json()["picture"]
+    users_name = userinfo_response.json()["given_name"]
     # Create a user in our db with the information provided
     # by Google
     user = User(

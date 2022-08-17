@@ -38,7 +38,7 @@ class Expression:
         """
 
         # Add '$' as an end of line marker
-        self._expr_string = expression_string.strip() + "$"
+        self._expr_string = f"{expression_string.strip()}$"
 
         # Start parsing at the first character
         self._current_position = 0
@@ -61,8 +61,8 @@ class Expression:
         """
         if not self._evaluated:
             self.parse()
-            if not self._evaluated:
-                raise ValueError
+        if not self._evaluated:
+            raise ValueError
         return self._output_string
 
     def parse(self):
@@ -93,13 +93,13 @@ class Expression:
                 self._current_position += 1
                 current_char = self._expr_string[self._current_position]
 
-            # Store whatever is next in the current_token string
-            current_token = ""
-
             # If we are looking for an operand
             if expecting_operand:
+                # Store whatever is next in the current_token string
+                current_token = ""
+
                 # First, we need to check for a leading '-' or '+' sign
-                if current_char == "-" or current_char == "+":
+                if current_char in ["-", "+"]:
                     current_token += current_char
                     self._current_position += 1
                     current_char = self._expr_string[self._current_position]
@@ -112,7 +112,7 @@ class Expression:
 
                 # We should have a number now - add it to the output string,
                 # space delimited
-                self._output_string += current_token + " "
+                self._output_string += f"{current_token} "
 
                 # And after every operand, we need to look for an operator
                 expecting_operand = False
@@ -133,22 +133,19 @@ class Expression:
                 #     - Pop it and output it.
                 #   - Push the current operator
 
-                if not self._operator_stack:
-                    self._operator_stack.append(current_operator)
-
-                else:
+                if self._operator_stack:
                     top_operator = self._operator_stack[-1]
                     while (
                         self._operator_stack
                         and top_operator.precedence
                         > current_operator.precedence
                     ):
-                        self._output_string += top_operator.op_string + " "
+                        self._output_string += f"{top_operator.op_string} "
                         self._operator_stack.pop()
                         if self._operator_stack:
                             top_operator = self._operator_stack[-1]
 
-                    self._operator_stack.append(current_operator)
+                self._operator_stack.append(current_operator)
 
                 # Get the next character
                 self._current_position += 1
@@ -167,7 +164,7 @@ class Expression:
 
         while self._operator_stack:
             top_operator = self._operator_stack.pop()
-            self._output_string += top_operator.op_string + " "
+            self._output_string += f"{top_operator.op_string} "
 
         self._evaluated = True
         return self._output_string

@@ -54,11 +54,7 @@ def build_weather_query(city_input, imperial=False):
     city_name = " ".join(city_input)
     url_encoded_city_name = parse.quote_plus(city_name)
     units = "imperial" if imperial else "metric"
-    url = (
-        f"{BASE_WEATHER_API_URL}?q={url_encoded_city_name}"
-        f"&units={units}&appid={api_key}"
-    )
-    return url
+    return f"{BASE_WEATHER_API_URL}?q={url_encoded_city_name}&units={units}&appid={api_key}"
 
 
 def _get_api_key():
@@ -142,22 +138,21 @@ def _select_weather_display_params(weather_id):
         tuple[str]: Contains a weather symbol and a display color
     """
     if weather_id in THUNDERSTORM:
-        display_params = ("💥", style.RED)
+        return "💥", style.RED
     elif weather_id in DRIZZLE:
-        display_params = ("💧", style.CYAN)
+        return "💧", style.CYAN
     elif weather_id in RAIN:
-        display_params = ("💦", style.BLUE)
+        return "💦", style.BLUE
     elif weather_id in SNOW:
-        display_params = ("⛄️", style.WHITE)
+        return "⛄️", style.WHITE
     elif weather_id in ATMOSPHERE:
-        display_params = ("🌀", style.BLUE)
+        return "🌀", style.BLUE
     elif weather_id in CLEAR:
-        display_params = ("🔆", style.YELLOW)
+        return "🔆", style.YELLOW
     elif weather_id in CLOUDY:
-        display_params = ("💨", style.WHITE)
+        return "💨", style.WHITE
     else:  # In case the API adds new weather codes
-        display_params = ("🌈", style.RESET)
-    return display_params
+        return "🌈", style.RESET
 
 
 if __name__ == "__main__":

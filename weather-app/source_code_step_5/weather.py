@@ -43,11 +43,7 @@ def build_weather_query(city_input, imperial=False):
     city_name = " ".join(city_input)
     url_encoded_city_name = parse.quote_plus(city_name)
     units = "imperial" if imperial else "metric"
-    url = (
-        f"{BASE_WEATHER_API_URL}?q={url_encoded_city_name}"
-        f"&units={units}&appid={api_key}"
-    )
-    return url
+    return f"{BASE_WEATHER_API_URL}?q={url_encoded_city_name}&units={units}&appid={api_key}"
 
 
 def _get_api_key():

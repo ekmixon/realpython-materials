@@ -22,8 +22,7 @@ import csv
 
 
 def parse_next_line(csv_file):
-    for line in csv.DictReader(csv_file):
-        yield line
+    yield from csv.DictReader(csv_file)
 
 
 def get_name_and_diff(team_stats):

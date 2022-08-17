@@ -20,15 +20,13 @@ def init(
     ),
 ) -> None:
     """Initialize the to-do database."""
-    app_init_error = config.init_app(db_path)
-    if app_init_error:
+    if app_init_error := config.init_app(db_path):
         typer.secho(
             f'Creating config file failed with "{ERRORS[app_init_error]}"',
             fg=typer.colors.RED,
         )
         raise typer.Exit(1)
-    db_init_error = database.init_database(Path(db_path))
-    if db_init_error:
+    if db_init_error := database.init_database(Path(db_path)):
         typer.secho(
             f'Creating database failed with "{ERRORS[db_init_error]}"',
             fg=typer.colors.RED,
@@ -49,12 +47,11 @@ def get_todoer() -> rptodo.Todoer:
         raise typer.Exit(1)
     if db_path.exists():
         return rptodo.Todoer(db_path)
-    else:
-        typer.secho(
-            'Database not found. Please, run "rptodo init"',
-            fg=typer.colors.RED,
-        )
-        raise typer.Exit(1)
+    typer.secho(
+        'Database not found. Please, run "rptodo init"',
+        fg=typer.colors.RED,
+    )
+    raise typer.Exit(1)
 
 
 @app.command()

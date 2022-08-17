@@ -25,9 +25,7 @@ class Card:
         """Points this card is worth"""
         if self.suit == "♠" and self.rank == "Q":
             return 13
-        if self.suit == "♡":
-            return 1
-        return 0
+        return 1 if self.suit == "♡" else 0
 
     def __eq__(self, other: Any) -> Any:
         return self.suit == other.suit and self.rank == other.rank
@@ -117,10 +115,7 @@ class Player:
     def play_card(self, played: List[Card], hearts_broken: bool) -> Card:
         """Play a card from a cpu player's hand"""
         playable = self.playable_cards(played, hearts_broken)
-        non_winning = self.non_winning_cards(played, playable)
-
-        # Strategy
-        if non_winning:
+        if non_winning := self.non_winning_cards(played, playable):
             # Highest card not winning the trick, prefer points
             card = max(non_winning, key=lambda c: (c.points, c.value))
         elif len(played) < 3:

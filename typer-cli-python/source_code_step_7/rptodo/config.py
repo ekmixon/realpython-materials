@@ -17,9 +17,7 @@ def init_app(db_path: str) -> int:
     if config_code != SUCCESS:
         return config_code
     database_code = _create_database(db_path)
-    if database_code != SUCCESS:
-        return database_code
-    return SUCCESS
+    return database_code if database_code != SUCCESS else SUCCESS
 
 
 def _init_config_file() -> int:

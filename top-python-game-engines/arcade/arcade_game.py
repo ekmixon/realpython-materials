@@ -109,9 +109,7 @@ class ArcadeGame(arcade.Window):
             self.coin_countdown -= self.coin_interval
 
             # Make sure you don't go too quickly
-            if self.coin_countdown < 0.1:
-                self.coin_countdown = 0.1
-
+            self.coin_countdown = max(self.coin_countdown, 0.1)
             # Stop the previously scheduled call
             arcade.unschedule(function_pointer=self.add_coin)
 

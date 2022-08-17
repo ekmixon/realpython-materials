@@ -91,10 +91,9 @@ def get_answers(question, alternatives, num_choices=1, hint=None):
             print(f"Please answer {num_choices} alternative{plural_s}")
             continue
 
-        invalid = [
+        if invalid := [
             answer for answer in answers if answer not in labeled_alternatives
-        ]
-        if invalid:
+        ]:
             print(
                 f"{invalid[0]} is not a valid choice. "
                 f"Please use {', '.join(labeled_alternatives)}"

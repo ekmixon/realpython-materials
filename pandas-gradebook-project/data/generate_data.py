@@ -67,10 +67,7 @@ class Student:
         ), f"PSID not 7 digits for {self.first_name} {self.last_name}"
 
         self.full_name = f"{self.last_name}"
-        if self.modifier is not None:
-            self.full_name += f" {self.modifier}, "
-        else:
-            self.full_name += ", "
+        self.full_name += f" {self.modifier}, " if self.modifier is not None else ", "
         self.full_name += self.first_name
         if self.middle_name is not None:
             self.full_name += f" {self.middle_name}"

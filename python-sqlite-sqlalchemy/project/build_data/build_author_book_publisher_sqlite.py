@@ -20,8 +20,7 @@ def get_author_book_publisher_data(filepath):
     """
     with open(filepath) as csvfile:
         csv_reader = csv.DictReader(csvfile)
-        data = [row for row in csv_reader]
-        return data
+        return list(csv_reader)
 
 
 def populate_database(session, author_book_publisher_data):

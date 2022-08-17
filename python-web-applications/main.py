@@ -16,8 +16,7 @@ def fahrenheit_from(celsius):
 
 @app.route("/")
 def index():
-    celsius = request.args.get("celsius", "")
-    if celsius:
+    if celsius := request.args.get("celsius", ""):
         fahrenheit = fahrenheit_from(celsius)
     else:
         fahrenheit = ""

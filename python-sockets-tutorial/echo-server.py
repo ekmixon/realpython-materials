@@ -12,7 +12,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     with conn:
         print(f"Connected by {addr}")
         while True:
-            data = conn.recv(1024)
-            if not data:
+            if data := conn.recv(1024):
+                conn.sendall(data)
+            else:
                 break
-            conn.sendall(data)

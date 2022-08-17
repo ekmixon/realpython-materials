@@ -5,7 +5,4 @@ def load_sprite(name, with_alpha=True):
     path = f"assets/sprites/{name}.png"
     loaded_sprite = load(path)
 
-    if with_alpha:
-        return loaded_sprite.convert_alpha()
-    else:
-        return loaded_sprite.convert()
+    return loaded_sprite.convert_alpha() if with_alpha else loaded_sprite.convert()

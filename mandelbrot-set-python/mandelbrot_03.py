@@ -22,7 +22,5 @@ class MandelbrotSet:
         for iteration in range(self.max_iterations):
             z = z**2 + c
             if abs(z) > self.escape_radius:
-                if smooth:
-                    return iteration + 1 - log(log(abs(z))) / log(2)
-                return iteration
+                return iteration + 1 - log(log(abs(z))) / log(2) if smooth else iteration
         return self.max_iterations

@@ -94,7 +94,7 @@ class Header:
     def from_bytes(data: bytes) -> "Header":
         """Factory method to deserialize the header from bytes."""
         return Header(
-            signature=data[0x00:2],
+            signature=data[:2],
             file_size_bytes=unsigned_int(data, 0x02),
             pixels_offset=unsigned_int(data, 0x0A),
             width=unsigned_int(data, 0x12),

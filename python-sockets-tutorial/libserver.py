@@ -85,8 +85,7 @@ class Message:
         }
         jsonheader_bytes = self._json_encode(jsonheader, "utf-8")
         message_hdr = struct.pack(">H", len(jsonheader_bytes))
-        message = message_hdr + jsonheader_bytes + content_bytes
-        return message
+        return message_hdr + jsonheader_bytes + content_bytes
 
     def _create_response_json_content(self):
         action = self.request.get("action")
@@ -97,21 +96,18 @@ class Message:
         else:
             content = {"result": f"Error: invalid action '{action}'."}
         content_encoding = "utf-8"
-        response = {
+        return {
             "content_bytes": self._json_encode(content, content_encoding),
             "content_type": "text/json",
             "content_encoding": content_encoding,
         }
-        return response
 
     def _create_response_binary_content(self):
-        response = {
-            "content_bytes": b"First 10 bytes of request: "
-            + self.request[:10],
+        return {
+            "content_bytes": b"First 10 bytes of request: " + self.request[:10],
             "content_type": "binary/custom-server-binary-type",
             "content_encoding": "binary",
         }
-        return response
 
     def process_events(self, mask):
         if mask & selectors.EVENT_READ:
@@ -125,18 +121,15 @@ class Message:
         if self._jsonheader_len is None:
             self.process_protoheader()
 
-        if self._jsonheader_len is not None:
-            if self.jsonheader is None:
-                self.process_jsonheader()
+        if self._jsonheader_len is not None and self.jsonheader is None:
+            self.process_jsonheader()
 
-        if self.jsonheader:
-            if self.request is None:
-                self.process_request()
+        if self.jsonheader and self.request is None:
+            self.process_request()
 
     def write(self):
-        if self.request:
-            if not self.response_created:
-                self.create_response()
+        if self.request and not self.response_created:
+            self.create_response()
 
         self._write()
 
@@ -184,7 +177,7 @@ class Message:
 
     def process_request(self):
         content_len = self.jsonheader["content-length"]
-        if not len(self._recv_buffer) >= content_len:
+        if len(self._recv_buffer) < content_len:
             return
         data = self._recv_buffer[:content_len]
         self._recv_buffer = self._recv_buffer[content_len:]

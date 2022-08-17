@@ -46,7 +46,7 @@ def test_no_lines():
 
 def test_trailing_blank_lines(mock_csv_data):
     mock_csv_data.append("")
-    all_lines = [x for x in wthr.get_next_day_and_avg(mock_csv_data)]
+    all_lines = list(wthr.get_next_day_and_avg(mock_csv_data))
     assert len(all_lines) == 2
     for line in all_lines:
         assert len(line) == 2
@@ -54,7 +54,7 @@ def test_trailing_blank_lines(mock_csv_data):
 
 def test_mid_blank_lines(mock_csv_data):
     mock_csv_data.insert(1, "")
-    all_lines = [x for x in wthr.get_next_day_and_avg(mock_csv_data)]
+    all_lines = list(wthr.get_next_day_and_avg(mock_csv_data))
     assert len(all_lines) == 2
     for line in all_lines:
         assert len(line) == 2

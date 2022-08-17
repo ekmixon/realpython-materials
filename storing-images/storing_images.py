@@ -43,12 +43,11 @@ images, labels = [], []
 for batch in data_dir.glob("data_batch_*"):
     batch_data = unpickle(batch)
     for i, flat_im in enumerate(batch_data[b"data"]):
-        im_channels = []
-        # Each image is flattened, with channels in order of R, G, B
-        for j in range(3):
-            im_channels.append(
-                flat_im[j * 1024 : (j + 1) * 1024].reshape((32, 32))
-            )
+        im_channels = [
+            flat_im[j * 1024 : (j + 1) * 1024].reshape((32, 32))
+            for j in range(3)
+        ]
+
         # Reconstruct the original image
         images.append(np.dstack((im_channels)))
         # Save the label
@@ -150,7 +149,7 @@ _store_single_funcs = dict(
 
 # Run the write single image experiment
 
-store_single_timings = dict()
+store_single_timings = {}
 
 for method in ("disk", "lmdb", "hdf5"):
     t = timeit(
@@ -250,7 +249,7 @@ print(np.shape(labels))
 
 store_many_timings = {"disk": [], "lmdb": [], "hdf5": []}
 
-for cutoff in cutoffs:
+for _ in cutoffs:
     for method in ("disk", "lmdb", "hdf5"):
         t = timeit(
             "_store_many_funcs[method](images_, labels_)",
@@ -340,12 +339,12 @@ width = 0.35
 
 plt.subplots(figsize=(8, 10))
 plots = [plt.bar(ind, [row[0] for row in X], width)]
-for i in range(1, len(cutoffs)):
-    plots.append(
-        plt.bar(
-            ind, [row[i] for row in X], width, bottom=[row[i - 1] for row in X]
-        )
+plots.extend(
+    plt.bar(
+        ind, [row[i] for row in X], width, bottom=[row[i - 1] for row in X]
     )
+    for i in range(1, len(cutoffs))
+)
 
 plt.ylabel("Memory in KB")
 plt.title("Disk memory used by method")
@@ -437,7 +436,7 @@ _read_single_funcs = dict(
     disk=read_single_disk, lmdb=read_single_lmdb, hdf5=read_single_hdf5
 )
 
-read_single_timings = dict()
+read_single_timings = {}
 
 for method in ("disk", "lmdb", "hdf5"):
     t = timeit(
@@ -467,15 +466,16 @@ def read_many_disk(num_images):
     images, labels = [], []
 
     # Loop over all IDs and read each image in one by one
-    for image_id in range(num_images):
-        images.append(np.array(Image.open(disk_dir / f"{image_id}.png")))
+    images.extend(
+        np.array(Image.open(disk_dir / f"{image_id}.png"))
+        for image_id in range(num_images)
+    )
 
     with open(disk_dir / f"{num_images}.csv", "r") as csvfile:
         reader = csv.reader(
             csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
         )
-        for row in reader:
-            labels.append(int(row[0]))
+        labels.extend(int(row[0]) for row in reader)
     return images, labels
 
 

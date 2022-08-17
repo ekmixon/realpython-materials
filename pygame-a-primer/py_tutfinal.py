@@ -104,17 +104,15 @@ while running:
     # Look at every event in the queue
     for event in pygame.event.get():
         # Did the user hit a key?
-        if event.type == KEYDOWN:
-            # Was it the Escape key? If so, stop the loop
-            if event.key == K_ESCAPE:
-                running = False
-
-        # Did the user click the window close button? If so, stop the loop
-        elif event.type == QUIT:
+        if (
+            event.type == KEYDOWN
+            and event.key == K_ESCAPE
+            or event.type != KEYDOWN
+            and event.type == QUIT
+        ):
             running = False
 
-        # Should we add a new enemy?
-        elif event.type == ADDENEMY:
+        elif event.type != KEYDOWN and event.type == ADDENEMY:
             # Create the new enemy, and add it to our sprite groups
             new_enemy = Enemy()
             enemies.add(new_enemy)

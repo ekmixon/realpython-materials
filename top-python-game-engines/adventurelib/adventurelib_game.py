@@ -63,17 +63,12 @@ def look_at(item: str):
 
     global inventory, current_room
 
-    # Check if the item is in the room
-    obj = current_room.items.find(item)
-    if not obj:
-        # Check if the item is in your inventory
-        obj = inventory.find(item)
-        if not obj:
-            print(f"I can't find {item} anywhere.")
-        else:
-            print(f"You have {item}.")
-    else:
+    if obj := current_room.items.find(item):
         print(f"You see {item}.")
+    elif obj := inventory.find(item):
+        print(f"You have {item}.")
+    else:
+        print(f"I can't find {item} anywhere.")
 
 
 @adv.when("describe ITEM")
@@ -88,17 +83,12 @@ def describe(item: str):
 
     global inventory, current_room
 
-    # Check if the item is in the room
-    obj = current_room.items.find(item)
-    if not obj:
-        # Check if the item is in your inventory
-        obj = inventory.find(item)
-        if not obj:
-            print(f"I can't find {item} anywhere.")
-        else:
-            print(f"You have {obj.description}.")
-    else:
+    if obj := current_room.items.find(item):
         print(f"You see {obj.description}.")
+    elif obj := inventory.find(item):
+        print(f"You have {obj.description}.")
+    else:
+        print(f"I can't find {item} anywhere.")
 
 
 @adv.when("take ITEM")
@@ -109,12 +99,11 @@ def describe(item: str):
 def take_item(item: str):
     global current_room
 
-    obj = current_room.items.take(item)
-    if not obj:
-        print(f"I don't see {item} here.")
-    else:
+    if obj := current_room.items.take(item):
         print(f"You now have {obj.description}.")
         inventory.add(obj)
+    else:
+        print(f"I don't see {item} here.")
 
 
 @adv.when("eat ITEM")
@@ -165,17 +154,12 @@ def wear(item: str):
 def talk_to(character: str):
     global current_room
 
-    char = current_room.characters.find(character)
-
-    # Is the character there?
-    if not char:
-        print(f"Sorry, I can't find {character}.")
-
-    # It's a character who is there
-    else:
+    if char := current_room.characters.find(character):
         # Set the context, and start the encounter
         adv.set_context(char.context)
         adv.say(char.greeting)
+    else:
+        print(f"Sorry, I can't find {character}.")
 
 
 @adv.when("yes", context="elder")
@@ -472,9 +456,7 @@ def go(direction: str):
     # What is your current room
     global current_room
 
-    # Is there an exit in that direction?
-    next_room = current_room.exit(direction)
-    if next_room:
+    if next_room := current_room.exit(direction):
         # Is the door locked?
         if (
             direction in current_room.locked_exits
@@ -498,7 +480,6 @@ def go(direction: str):
                 print(f"You go {direction}.")
                 look()
 
-    # No exit that way
     else:
         print(f"You can't go {direction}.")
 
@@ -531,10 +512,7 @@ def no_command_matches(command: str):
 def get_exits(room):
     exits = room.exits()
 
-    exits_string = ""
-    for exit in exits:
-        exits_string += f"{exit[0].upper()}|"
-
+    exits_string = "".join(f"{exit[0].upper()}|" for exit in exits)
     return exits_string[:-1]
 
 

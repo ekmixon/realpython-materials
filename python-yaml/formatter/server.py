@@ -55,8 +55,6 @@ async def index():
 async def serialize(parameters: Parameters):
     try:
         serialized = yaml.dump(TEST_DATA, **vars(parameters))
-        if isinstance(serialized, bytes):
-            return repr(serialized)
-        return serialized
+        return repr(serialized) if isinstance(serialized, bytes) else serialized
     except Exception as ex:
         return JSONResponse(str(ex), status_code=400)

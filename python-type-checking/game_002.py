@@ -20,7 +20,7 @@ def create_deck(shuffle: bool = False) -> Deck:
 
 def deal_hands(deck: Deck) -> Tuple[Deck, Deck, Deck, Deck]:
     """Deal the cards in the deck into four hands"""
-    return (deck[0::4], deck[1::4], deck[2::4], deck[3::4])
+    return deck[::4], deck[1::4], deck[2::4], deck[3::4]
 
 
 def choose(items):
@@ -40,7 +40,7 @@ def play() -> None:
     """Play a 4-player card game"""
     deck = create_deck(shuffle=True)
     names = "P1 P2 P3 P4".split()
-    hands = {n: h for n, h in zip(names, deal_hands(deck))}
+    hands = dict(zip(names, deal_hands(deck)))
     start_player = choose(names)
     turn_order = player_order(names, start=start_player)
 

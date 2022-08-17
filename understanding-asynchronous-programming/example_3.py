@@ -36,7 +36,7 @@ def main():
                     next(t)
                 except StopIteration:
                     tasks.remove(t)
-                if len(tasks) == 0:
+                if not tasks:
                     done = True
 
 

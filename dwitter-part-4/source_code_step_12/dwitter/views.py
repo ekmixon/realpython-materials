@@ -6,12 +6,11 @@ from .models import Dweet, Profile
 
 def dashboard(request):
     form = DweetForm(request.POST or None)
-    if request.method == "POST":
-        if form.is_valid():
-            dweet = form.save(commit=False)
-            dweet.user = request.user
-            dweet.save()
-            return redirect("dwitter:dashboard")
+    if request.method == "POST" and form.is_valid():
+        dweet = form.save(commit=False)
+        dweet.user = request.user
+        dweet.save()
+        return redirect("dwitter:dashboard")
 
     followed_dweets = Dweet.objects.filter(
         user__profile__in=request.user.profile.follows.all()

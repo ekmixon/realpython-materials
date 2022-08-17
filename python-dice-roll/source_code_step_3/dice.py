@@ -58,9 +58,8 @@ def parse_input(input_string):
     """
     if input_string.strip() in {"1", "2", "3", "4", "5", "6"}:
         return int(input_string)
-    else:
-        print("Please enter a number from 1 to 6.")
-        raise SystemExit(1)
+    print("Please enter a number from 1 to 6.")
+    raise SystemExit(1)
 
 
 def roll_dice(num_dice):
@@ -91,16 +90,11 @@ def generate_dice_faces_diagram(dice_values):
     └─────────┘ └─────────┘ └─────────┘ └─────────┘
     """
     # Generate a list of dice faces from DICE_ART
-    dice_faces = []
-    for value in dice_values:
-        dice_faces.append(DICE_ART[value])
-
+    dice_faces = [DICE_ART[value] for value in dice_values]
     # Generate a list containing the dice faces rows
     dice_faces_rows = []
     for row_idx in range(DIE_HEIGHT):
-        row_components = []
-        for die in dice_faces:
-            row_components.append(die[row_idx])
+        row_components = [die[row_idx] for die in dice_faces]
         row_string = DIE_FACE_SEPARATOR.join(row_components)
         dice_faces_rows.append(row_string)
 
@@ -108,8 +102,7 @@ def generate_dice_faces_diagram(dice_values):
     width = len(dice_faces_rows[0])
     diagram_header = " RESULTS ".center(width, "~")
 
-    dice_faces_diagram = "\n".join([diagram_header] + dice_faces_rows)
-    return dice_faces_diagram
+    return "\n".join([diagram_header] + dice_faces_rows)
 
 
 # ~~~ App's main code block ~~~

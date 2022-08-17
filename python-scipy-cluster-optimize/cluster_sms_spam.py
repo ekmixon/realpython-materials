@@ -5,6 +5,7 @@ Associated with the Real Python article
 Scientific Python: Using SciPy for Optimization
 Available at: https://realpython.com/python-scipy-cluster-optimize/
 """
+
 from pathlib import Path
 import numpy as np
 from scipy.cluster.vq import whiten, kmeans, vq
@@ -29,7 +30,7 @@ codes, _ = vq(whitened_counts, codebook)
 
 ham_code = codes[0]
 spam_code = codes[-1]
-unknown_code = list(set(range(3)) ^ set((ham_code, spam_code)))[0]
+unknown_code = list(set(range(3)) ^ {ham_code, spam_code})[0]
 
 print("definitely ham:", unique_counts[codes == ham_code][-1])
 print("definitely spam:", unique_counts[codes == spam_code][-1])

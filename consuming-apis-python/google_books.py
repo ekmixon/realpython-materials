@@ -23,4 +23,4 @@ for book in response["items"]:
     published = volume["publishedDate"]
     description = volume["description"]
 
-    print("%s (%s) | %s" % (title, published, description))
+    print(f"{title} ({published}) | {description}")

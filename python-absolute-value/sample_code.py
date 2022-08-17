@@ -22,10 +22,7 @@ class VectorFree:
 
 
 def absolute_value_piecewise(x):
-    if x >= 0:
-        return x
-    else:
-        return -x
+    return x if x >= 0 else -x
 
 
 def absolute_value_piecewise_conditional_expression(x):

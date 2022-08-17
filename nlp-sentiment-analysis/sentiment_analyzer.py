@@ -134,12 +134,7 @@ def load_training_data(
                     text = f.read()
                     text = text.replace("<br />", "\n\n")
                     if text.strip():
-                        spacy_label = {
-                            "cats": {
-                                "pos": "pos" == label,
-                                "neg": "neg" == label,
-                            }
-                        }
+                        spacy_label = {"cats": {"pos": label == "pos", "neg": label == "neg"}}
                         reviews.append((text, spacy_label))
     random.shuffle(reviews)
 

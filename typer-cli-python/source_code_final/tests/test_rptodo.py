@@ -76,8 +76,7 @@ def test_add(mock_json_file, description, priority, expected):
 
 @pytest.fixture
 def mock_wrong_json_file(tmp_path):
-    db_file = tmp_path / "todo.json"
-    return db_file
+    return tmp_path / "todo.json"
 
 
 def test_add_wrong_json_file(mock_wrong_json_file):

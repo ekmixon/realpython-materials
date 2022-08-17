@@ -69,9 +69,7 @@ class Worker(threading.Thread):
 
     @property
     def state(self):
-        if self.working:
-            return f"{self.product} ({self.progress}%)"
-        return ":zzz: Idle"
+        return f"{self.product} ({self.progress}%)" if self.working else ":zzz: Idle"
 
     def simulate_idle(self):
         self.product = None

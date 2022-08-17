@@ -59,10 +59,7 @@ class _TreeGenerator:
         self, directory, index, entries_count, prefix, connector
     ):
         self._tree.append(f"{prefix}{connector} {directory.name}{os.sep}")
-        if index != entries_count - 1:
-            prefix += PIPE_PREFIX
-        else:
-            prefix += SPACE_PREFIX
+        prefix += PIPE_PREFIX if index != entries_count - 1 else SPACE_PREFIX
         self._tree_body(
             directory=directory,
             prefix=prefix,

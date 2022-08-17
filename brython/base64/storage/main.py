@@ -5,13 +5,10 @@ import base64
 
 
 def load_data():
-    data = storage.get("b64data")
-    if data:
-        b64_map = json.loads(data)
-    else:
-        storage["b64data"] = json.dumps({})
-        b64_map = {}
-    return b64_map
+    if data := storage.get("b64data"):
+        return json.loads(data)
+    storage["b64data"] = json.dumps({})
+    return {}
 
 
 def base64_compute(evt):

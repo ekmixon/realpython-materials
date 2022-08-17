@@ -8,6 +8,7 @@ of adventurelib. It will:
 - Require that inventory item to move to the final room
 """
 
+
 # Import the library contents
 import adventurelib as adv
 
@@ -44,8 +45,8 @@ living_room.east = front_porch
 living_room.locked = {"east": True}
 
 # None of the other rooms have any locked doors
-bedroom.locked = dict()
-front_porch.locked = dict()
+bedroom.locked = {}
+front_porch.locked = {}
 
 # Set the starting room as the current room
 current_room = bedroom
@@ -97,9 +98,7 @@ def go(direction: str):
     # What is your current room?
     global current_room
 
-    # Is there an exit in that direction?
-    next_room = current_room.exit(direction)
-    if next_room:
+    if next_room := current_room.exit(direction):
         # Is the door locked?
         if direction in current_room.locked and current_room.locked[direction]:
             print(f"You can't go {direction} --- the door is locked.")
@@ -108,7 +107,6 @@ def go(direction: str):
             print(f"You go {direction}.")
             look()
 
-    # No exit that way
     else:
         print(f"You can't go {direction}.")
 
@@ -134,12 +132,10 @@ def look():
 @adv.when("inspect ITEM")
 def look_at(item: str):
 
-    # Check if the item is in your inventory or not
-    obj = inventory.find(item)
-    if not obj:
-        print(f"You don't have {item}.")
-    else:
+    if obj := inventory.find(item):
         print(f"It's an {obj}.")
+    else:
+        print(f"You don't have {item}.")
 
 
 # How do you pick up items?
@@ -154,12 +150,11 @@ def get(item: str):
     """
     global current_room
 
-    obj = current_room.contents.take(item)
-    if not obj:
-        print(f"There is no {item} here.")
-    else:
+    if obj := current_room.contents.take(item):
         print(f"You now have {item}.")
         inventory.add(obj)
+    else:
+        print(f"There is no {item} here.")
 
 
 # How do you use an item?
@@ -172,14 +167,10 @@ def use(item: str):
         item {str} -- Which item to use
     """
 
-    # First, do you have the item?
-    obj = inventory.take(item)
-    if not obj:
-        print(f"You don't have {item}")
-
-    # Try to use the item
-    else:
+    if obj := inventory.take(item):
         obj.use_item(current_room)
+    else:
+        print(f"You don't have {item}")
 
 
 if __name__ == "__main__":

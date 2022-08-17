@@ -15,11 +15,9 @@ def index():
 
 @app.route("/service/sms/send", methods=["POST"])
 def send_sms():
-    request_body = app.current_request.json_body
-    if request_body:
+    if request_body := app.current_request.json_body:
         try:
-            resp = sms.send(request_body)
-            if resp:
+            if resp := sms.send(request_body):
                 return Response(
                     status_code=201,
                     headers={"Content-Type": "application/json"},

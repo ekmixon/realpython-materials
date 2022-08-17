@@ -21,4 +21,4 @@ response = requests.get(endpoint, params=params).json()
 for gif in response["data"]:
     title = gif["title"]
     url = gif["url"]
-    print("%s | %s" % (title, url))
+    print(f"{title} | {url}")

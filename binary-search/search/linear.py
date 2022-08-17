@@ -11,10 +11,10 @@ def find_index(
     elements: Sequence[T], value: S, key: Key = identity
 ) -> Optional[int]:
     """Return the index of value in elements or None."""
-    for i, element in enumerate(elements):
-        if key(element) == value:
-            return i
-    return None
+    return next(
+        (i for i, element in enumerate(elements) if key(element) == value),
+        None,
+    )
 
 
 def find(elements: Sequence[T], value: S, key: Key = identity) -> Optional[T]:

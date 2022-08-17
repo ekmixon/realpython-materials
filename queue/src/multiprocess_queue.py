@@ -85,8 +85,7 @@ def main(args):
 
     while any(worker.is_alive() for worker in workers):
         try:
-            solution = queue_out.get(timeout=0.1)
-            if solution:
+            if solution := queue_out.get(timeout=0.1):
                 t2 = time.perf_counter()
                 print(f"{solution} (found in {t2 - t1:.1f}s)")
                 break

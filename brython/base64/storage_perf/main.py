@@ -4,10 +4,7 @@ import base64
 
 
 def load_data():
-    b64_map = {}
-    for key in storage.keys():
-        b64_map[key] = storage.get(key)
-    return b64_map
+    return {key: storage.get(key) for key in storage.keys()}
 
 
 def save_data(key, value):

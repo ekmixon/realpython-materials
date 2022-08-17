@@ -34,7 +34,7 @@ async def site_is_online_async(url, timeout=2):
     parser = urlparse(url)
     host = parser.netloc or parser.path.split("/")[0]
     for scheme in ("http", "https"):
-        target_url = scheme + "://" + host
+        target_url = f"{scheme}://{host}"
         async with aiohttp.ClientSession() as session:
             try:
                 await session.head(target_url, timeout=timeout)

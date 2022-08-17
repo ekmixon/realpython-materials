@@ -16,14 +16,14 @@ def create_deck(shuffle=False):
 
 def deal_hands(deck):
     """Deal the cards in the deck into four hands"""
-    return (deck[0::4], deck[1::4], deck[2::4], deck[3::4])
+    return deck[::4], deck[1::4], deck[2::4], deck[3::4]
 
 
 def play():
     """Play a 4-player card game"""
     deck = create_deck(shuffle=True)
     names = "P1 P2 P3 P4".split()
-    hands = {n: h for n, h in zip(names, deal_hands(deck))}
+    hands = dict(zip(names, deal_hands(deck)))
 
     for name, cards in hands.items():
         card_str = " ".join(f"{s}{r}" for (s, r) in cards)

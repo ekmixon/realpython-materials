@@ -1,5 +1,6 @@
 """This module provides the RP To-Do database functionality."""
 
+
 import configparser
 import json
 from pathlib import Path
@@ -7,9 +8,7 @@ from typing import Any, Dict, List, NamedTuple
 
 from rptodo import DB_READ_ERROR, DB_WRITE_ERROR, JSON_ERROR, SUCCESS
 
-DEFAULT_DB_FILE_PATH = Path.home().joinpath(
-    "." + Path.home().stem + "_todo.json"
-)
+DEFAULT_DB_FILE_PATH = Path.home().joinpath(f".{Path.home().stem}_todo.json")
 
 
 def get_database_path(config_file: Path) -> Path:

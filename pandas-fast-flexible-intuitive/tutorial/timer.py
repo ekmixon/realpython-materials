@@ -79,7 +79,4 @@ def timeit(_func=None, *, repeat=3, number=1000, file=sys.stdout):
         return _timeit
 
     # Syntax trick from Python @dataclass
-    if _func is None:
-        return wrap
-    else:
-        return wrap(_func)
+    return wrap if _func is None else wrap(_func)

@@ -68,10 +68,7 @@ def find_all_indices(
     left = find_leftmost_index(elements, value, key)
     right = find_rightmost_index(elements, value, key)
 
-    if left and right:
-        return set(range(left, right + 1))
-
-    return set()
+    return set(range(left, right + 1)) if left and right else set()
 
 
 def find(elements: Sequence[T], value: S, key: Key = identity) -> Optional[T]:

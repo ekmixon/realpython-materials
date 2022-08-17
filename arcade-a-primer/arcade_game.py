@@ -147,18 +147,18 @@ class SpaceShooter(arcade.Window):
         if symbol == arcade.key.P:
             self.paused = not self.paused
 
-        if symbol == arcade.key.I or symbol == arcade.key.UP:
+        if symbol in [arcade.key.I, arcade.key.UP]:
             self.player.change_y = 250
             arcade.play_sound(self.move_up_sound)
 
-        if symbol == arcade.key.K or symbol == arcade.key.DOWN:
+        if symbol in [arcade.key.K, arcade.key.DOWN]:
             self.player.change_y = -250
             arcade.play_sound(self.move_down_sound)
 
-        if symbol == arcade.key.J or symbol == arcade.key.LEFT:
+        if symbol in [arcade.key.J, arcade.key.LEFT]:
             self.player.change_x = -250
 
-        if symbol == arcade.key.L or symbol == arcade.key.RIGHT:
+        if symbol in [arcade.key.L, arcade.key.RIGHT]:
             self.player.change_x = 250
 
     def on_key_release(self, symbol: int, modifiers: int):
@@ -168,20 +168,15 @@ class SpaceShooter(arcade.Window):
             symbol {int} -- Which key was pressed
             modifiers {int} -- Which modifiers were pressed
         """
-        if (
-            symbol == arcade.key.I
-            or symbol == arcade.key.K
-            or symbol == arcade.key.UP
-            or symbol == arcade.key.DOWN
-        ):
+        if symbol in [arcade.key.I, arcade.key.K, arcade.key.UP, arcade.key.DOWN]:
             self.player.change_y = 0
 
-        if (
-            symbol == arcade.key.J
-            or symbol == arcade.key.L
-            or symbol == arcade.key.LEFT
-            or symbol == arcade.key.RIGHT
-        ):
+        if symbol in [
+            arcade.key.J,
+            arcade.key.L,
+            arcade.key.LEFT,
+            arcade.key.RIGHT,
+        ]:
             self.player.change_x = 0
 
     def on_update(self, delta_time: float):
@@ -228,10 +223,8 @@ class SpaceShooter(arcade.Window):
             self.player.top = self.height
         if self.player.right > self.width:
             self.player.right = self.width
-        if self.player.bottom < 0:
-            self.player.bottom = 0
-        if self.player.left < 0:
-            self.player.left = 0
+        self.player.bottom = max(self.player.bottom, 0)
+        self.player.left = max(self.player.left, 0)
 
     def on_draw(self):
         """Draw all game objects"""

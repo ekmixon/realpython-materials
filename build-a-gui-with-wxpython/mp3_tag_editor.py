@@ -86,17 +86,15 @@ class Mp3Panel(wx.Panel):
         self.list_ctrl.InsertColumn(2, "Title", width=200)
         self.list_ctrl.InsertColumn(3, "Year", width=200)
 
-        mp3s = glob.glob(folder_path + "/*.mp3")
+        mp3s = glob.glob(f"{folder_path}/*.mp3")
         mp3_objects = []
-        index = 0
-        for mp3 in mp3s:
+        for index, mp3 in enumerate(mp3s):
             mp3_object = eyed3.load(mp3)
             self.list_ctrl.InsertItem(index, mp3_object.tag.artist)
             self.list_ctrl.SetItem(index, 1, mp3_object.tag.album)
             self.list_ctrl.SetItem(index, 2, mp3_object.tag.title)
             mp3_objects.append(mp3_object)
             self.row_obj_dict[index] = mp3_object
-            index += 1
 
 
 class Mp3Frame(wx.Frame):

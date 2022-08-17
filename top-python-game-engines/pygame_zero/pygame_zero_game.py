@@ -9,6 +9,7 @@ Pygame Zero, including:
 
 """
 
+
 # Import pgzrun allows the program to run in Python IDLE
 # You can also run the program from the command line using:
 #   `pgzrun pygame_zero_basic.py`
@@ -31,7 +32,7 @@ player.center = player_position
 
 # Set up the coins to collect
 COIN_COUNT = 10
-coin_list = list()
+coin_list = []
 
 # Set up a timer to create new coins
 coin_countdown = 2.5
@@ -61,9 +62,7 @@ def add_coin():
         coin_countdown -= coin_interval
 
     # Make sure you don't go too quickly
-    if coin_countdown < 0.1:
-        coin_countdown = 0.1
-
+    coin_countdown = max(coin_countdown, 0.1)
     # Schedule the next coin addition
     clock.schedule(add_coin, coin_countdown)  # noqa: F821
 
@@ -80,13 +79,11 @@ def on_mouse_move(pos: Tuple):
     player_position = pos
 
     # Ensure the player doesn't move off the screen
-    if player_position[0] < 0:
-        player_position[0] = 0
+    player_position[0] = max(player_position[0], 0)
     if player_position[0] > WIDTH:
         player_position[0] = WIDTH
 
-    if player_position[1] < 0:
-        player_position[1] = 0
+    player_position[1] = max(player_position[1], 0)
     if player_position[1] > HEIGHT:
         player_position[1] = HEIGHT
 

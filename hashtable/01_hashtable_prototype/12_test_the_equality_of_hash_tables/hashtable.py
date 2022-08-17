@@ -58,9 +58,7 @@ class HashTable:
         return set(self.pairs) == set(other.pairs)
 
     def __str__(self):
-        pairs = []
-        for key, value in self.pairs:
-            pairs.append(f"{key!r}: {value!r}")
+        pairs = [f"{key!r}: {value!r}" for key, value in self.pairs]
         return "{" + ", ".join(pairs) + "}"
 
     def __repr__(self):

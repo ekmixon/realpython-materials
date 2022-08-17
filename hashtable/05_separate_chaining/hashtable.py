@@ -71,9 +71,7 @@ class HashTable:
         return set(self.pairs) == set(other.pairs)
 
     def __str__(self):
-        pairs = []
-        for key, value in self.pairs:
-            pairs.append(f"{key!r}: {value!r}")
+        pairs = [f"{key!r}: {value!r}" for key, value in self.pairs]
         return "{" + ", ".join(pairs) + "}"
 
     def __repr__(self):
@@ -120,7 +118,11 @@ class HashTable:
 
     def _find(self, key):
         bucket = self._buckets[self._index(key)]
-        for index, pair in enumerate(bucket):
-            if pair.key == key:
-                return bucket, index, pair
-        return bucket
+        return next(
+            (
+                (bucket, index, pair)
+                for index, pair in enumerate(bucket)
+                if pair.key == key
+            ),
+            bucket,
+        )

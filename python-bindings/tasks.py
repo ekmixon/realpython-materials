@@ -36,7 +36,7 @@ def clean(c):
 
 def print_banner(msg):
     print("==================================================")
-    print("= {} ".format(msg))
+    print(f"= {msg} ")
 
 
 @invoke.task()
@@ -98,7 +98,7 @@ def build_cffi(c):
         lns = h_file.read().splitlines()
         flt = filter(lambda ln: not re.match(r" *#", ln), lns)
         flt = map(lambda ln: ln.replace("EXPORT_SYMBOL ", ""), flt)
-        ffi.cdef(str("\n").join(flt))
+        ffi.cdef("\n".join(flt))
 
     ffi.set_source(
         "cffi_example",

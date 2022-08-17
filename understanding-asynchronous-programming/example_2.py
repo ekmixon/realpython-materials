@@ -7,7 +7,7 @@ def task(name, queue):
         count = queue.get()
         total = 0
         print(f"Task {name} running")
-        for x in range(count):
+        for _ in range(count):
             total += 1
             yield
         print(f"Task {name} total: {total}")
@@ -35,7 +35,7 @@ def main():
                 next(t)
             except StopIteration:
                 tasks.remove(t)
-            if len(tasks) == 0:
+            if not tasks:
                 done = True
 
 

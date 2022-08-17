@@ -12,8 +12,7 @@ def parse_name(text: str) -> str:
         "{name}",
     )
     for pattern in patterns:
-        result = parse.parse(pattern, text)
-        if result:
+        if result := parse.parse(pattern, text):
             return result["name"]
     return ""
 

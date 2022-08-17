@@ -64,7 +64,7 @@ class TicTacToeGame:
         row, col = move.row, move.col
         self._current_moves[row][col] = move
         for combo in self._winning_combos:
-            results = set(self._current_moves[n][m].label for n, m in combo)
+            results = {self._current_moves[n][m].label for n, m in combo}
             is_win = (len(results) == 1) and ("" not in results)
             if is_win:
                 self._has_winner = True

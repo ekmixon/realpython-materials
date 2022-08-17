@@ -81,7 +81,7 @@ def apply_tariff_isin(df):
     # Define hour range Boolean arrays
     peak_hours = df.index.hour.isin(range(17, 24))
     shoulder_hours = df.index.hour.isin(range(7, 17))
-    off_peak_hours = df.index.hour.isin(range(0, 7))
+    off_peak_hours = df.index.hour.isin(range(7))
 
     # Apply tariffs to hour ranges
     df.loc[peak_hours, "cost_cents"] = df.loc[peak_hours, "energy_kwh"] * 28

@@ -33,8 +33,7 @@ def _read_urls_from_file(file):
     file_path = pathlib.Path(file)
     if file_path.is_file():
         with file_path.open() as urls_file:
-            urls = [url.strip() for url in urls_file]
-            if urls:
+            if urls := [url.strip() for url in urls_file]:
                 return urls
             print(f"Error: empty input file, {file}", file=sys.stderr)
     else:

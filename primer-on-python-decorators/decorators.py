@@ -6,11 +6,12 @@ The decorators with dependencies outside of the standard library (Flask
 and Pint) are available in separate files.
 """
 
+
 import functools
 import time
 
 
-PLUGINS = dict()  # Dictionary used by @register to store plugins
+PLUGINS = {}
 
 
 def do_twice(func):
@@ -84,10 +85,7 @@ def repeat(_func=None, *, num_times=2):
 
         return wrapper_repeat
 
-    if _func is None:
-        return decorator_repeat
-    else:
-        return decorator_repeat(_func)
+    return decorator_repeat if _func is None else decorator_repeat(_func)
 
 
 def count_calls(func):
@@ -128,10 +126,7 @@ def slow_down(_func=None, *, rate=1):
 
         return wrapper_slow_down
 
-    if _func is None:
-        return decorator_slow_down
-    else:
-        return decorator_slow_down(_func)
+    return decorator_slow_down if _func is None else decorator_slow_down(_func)
 
 
 def singleton(cls):
@@ -157,7 +152,7 @@ def cache(func):
             wrapper_cache.cache[cache_key] = func(*args, **kwargs)
         return wrapper_cache.cache[cache_key]
 
-    wrapper_cache.cache = dict()
+    wrapper_cache.cache = {}
     return wrapper_cache
 
 

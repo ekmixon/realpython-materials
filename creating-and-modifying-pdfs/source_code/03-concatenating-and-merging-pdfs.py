@@ -22,9 +22,7 @@ reports_dir = (
 for path in reports_dir.glob("*.pdf"):
     print(path.name)
 
-expense_reports = list(reports_dir.glob("*.pdf"))
-expense_reports.sort()
-
+expense_reports = sorted(reports_dir.glob("*.pdf"))
 for path in expense_reports:
     print(path.name)
 

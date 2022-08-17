@@ -19,11 +19,9 @@ def parse_map(map):
 
 def is_valid(lines, position):
     x, y = position
-    if not (0 <= y < len(lines) and 0 <= x < len(lines[y])):
+    if not 0 <= y < len(lines) or not 0 <= x < len(lines[y]):
         return False
-    if lines[y][x] == "X":
-        return False
-    return True
+    return lines[y][x] != "X"
 
 
 def get_neighbors(lines, current):
@@ -50,7 +48,7 @@ def find_path(map):
     tentative = {origin: []}
     candidates = [(0, origin)]
     certain = set()
-    while destination not in certain and len(candidates) > 0:
+    while destination not in certain and candidates:
         _ignored, current = heapq.heappop(candidates)
         if current in certain:
             continue
@@ -69,7 +67,7 @@ def find_path(map):
 def show_path(path, map):
     lines = map.splitlines()
     for x, y in path:
-        lines[y] = lines[y][:x] + "@" + lines[y][x + 1 :]
+        lines[y] = f"{lines[y][:x]}@{lines[y][x + 1:]}"
     return "\n".join(lines) + "\n"
 
 

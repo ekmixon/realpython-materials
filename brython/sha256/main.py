@@ -7,13 +7,10 @@ LOCAL_STORAGE = "hashdata"
 
 
 def load_data():
-    data = storage.get(LOCAL_STORAGE)
-    if data:
-        hash_map = json.loads(data)
-    else:
-        storage[LOCAL_STORAGE] = json.dumps({})
-        hash_map = {}
-    return hash_map
+    if data := storage.get(LOCAL_STORAGE):
+        return json.loads(data)
+    storage[LOCAL_STORAGE] = json.dumps({})
+    return {}
 
 
 def compute(evt):

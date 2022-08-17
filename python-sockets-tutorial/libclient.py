@@ -77,8 +77,7 @@ class Message:
         }
         jsonheader_bytes = self._json_encode(jsonheader, "utf-8")
         message_hdr = struct.pack(">H", len(jsonheader_bytes))
-        message = message_hdr + jsonheader_bytes + content_bytes
-        return message
+        return message_hdr + jsonheader_bytes + content_bytes
 
     def _process_response_json_content(self):
         content = self.response
@@ -101,13 +100,11 @@ class Message:
         if self._jsonheader_len is None:
             self.process_protoheader()
 
-        if self._jsonheader_len is not None:
-            if self.jsonheader is None:
-                self.process_jsonheader()
+        if self._jsonheader_len is not None and self.jsonheader is None:
+            self.process_jsonheader()
 
-        if self.jsonheader:
-            if self.response is None:
-                self.process_response()
+        if self.jsonheader and self.response is None:
+            self.process_response()
 
     def write(self):
         if not self._request_queued:
@@ -115,10 +112,9 @@ class Message:
 
         self._write()
 
-        if self._request_queued:
-            if not self._send_buffer:
-                # Set selector to listen for read events, we're done writing.
-                self._set_selector_events_mask("r")
+        if self._request_queued and not self._send_buffer:
+            # Set selector to listen for read events, we're done writing.
+            self._set_selector_events_mask("r")
 
     def close(self):
         print(f"Closing connection to {self.addr}")
@@ -184,7 +180,7 @@ class Message:
 
     def process_response(self):
         content_len = self.jsonheader["content-length"]
-        if not len(self._recv_buffer) >= content_len:
+        if len(self._recv_buffer) < content_len:
             return
         data = self._recv_buffer[:content_len]
         self._recv_buffer = self._recv_buffer[content_len:]

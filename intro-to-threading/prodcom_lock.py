@@ -41,7 +41,7 @@ class Pipeline:
 
 def producer(pipeline):
     """Pretend we're getting a message from the network."""
-    for index in range(10):
+    for _ in range(10):
         message = random.randint(1, 101)
         logging.info("Producer got message: %s", message)
         pipeline.set_message(message, "Producer")

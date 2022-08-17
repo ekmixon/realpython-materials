@@ -98,10 +98,7 @@ class Platformer(arcade.Window):
             game_map, layer_name=coin_layer, scaling=MAP_SCALING
         )
 
-        # Set the background color
-        background_color = arcade.color.FRESH_AIR
-        if game_map.background_color:
-            background_color = game_map.background_color
+        background_color = game_map.background_color or arcade.color.FRESH_AIR
         arcade.set_background_color(background_color)
 
         # Create the player sprite, if they're not already setup
